@@ -19,6 +19,7 @@ along side standard CPU and network utilization metrics.
 On an F2 instance, edit cycle-images.sh to run your application command line.
 
 Pass in the 2 Amazon Global FPGA id's (AGFI) e.g
+
 `[>] ./cycle-images.sh agfi-1a2b3c4d5e6f7g8h9i agfi-9a8b7c6d5e4f3g2h1i`
 
 ### Configuration
