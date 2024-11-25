@@ -11,6 +11,9 @@ rapidly cycle between waveform images.
 [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) custom metrics are pushed to measure 
 the load and clear times respectively, to validate that waveform cycle times meet latency requirements.
 
+**Note** - the Cloudwatch commands retrieve the instance-id and instance-type from F2 Instance metedata.
+F2 instances require [IMDSv2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html#instance-metadata-v2-how-it-works)
+
 Results can be visualized in a Cloudwatch [dashboard](https://aws.amazon.com/cloudwatch/features/telemetry-alarms-dashboards/)
 along side standard CPU and network utilization metrics.
 
