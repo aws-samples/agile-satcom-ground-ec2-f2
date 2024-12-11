@@ -12,7 +12,7 @@ In the blog post, we use the Custom Logic Streaming Data Engine (CL_SDE) example
     $ source sdk_setup.sh
 ```
 
-2. Next, build the CL_SDE AFI.
+2. Next, build the CL_SDE AFI. Be sure to use the small_shell option, which is the only shell supported currently.
 
 ```bash
     $ cd hdk/cl/examples/cl_sde
