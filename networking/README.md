@@ -2,13 +2,27 @@
 
 ### Overview
 
-In the blog post, we use the Custom Logic Streaming Data Engine (CL_SDE) example. To use the CL_SDE, you'll first need to build an AFI with the CL_SDE using the process described in the documentation here: 
+In the blog post, we use the Custom Logic Streaming Data Engine (CL_SDE) example. To use the CL_SDE, you'll first need to build an AFI with the CL_SDE using the process described in the documentation here: [AWS F2 FPGA](https://github.com/aws/aws-fpga-preview?tab=readme-ov-file#build-accelerator-afi-using-hdk-design-flow)
 
-[AWS F2 FPGA] (https://github.com/aws/aws-fpga-preview?tab=readme-ov-file#build-accelerator-afi-using-hdk-design-flow)
+### Configuration
+Pre-install the FPGA Management tools by sourcing the sdk_setup.sh script in the AWS F2 github repository.
 
-Step by step:
+```bash
+    $ cd aws-fpga-preview
+    $ source sdk_setup.sh
+```
 
+Next, build the CL_SDE AFI.
 
+```bash
+    $ cd hdk/cl/examples/cl_sde
+
+    $export CL_DIR=$(pwd)
+    cd build/scripts
+
+    $ ./aws_build_dcp_from_cl.py --mode small_shell --cl cl_sde
+
+```
 
 
 
