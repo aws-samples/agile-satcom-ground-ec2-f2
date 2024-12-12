@@ -34,7 +34,9 @@ After building the AFI, you'll identify the image IDs and load them into an avai
     $ ./aws_build_dcp_from_cl.py --mode small_shell --cl cl_sde
 ```
 
-3. After the build process completes, identify your AFI and AGFI.
+3. Continue with the build process starting with step 5 here: [AWS FPGA Github repo](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md#step-5-explore-build-artifacts)
+
+4. After the build process completes, identify your AFI and AGFI.
 
 ```bash
     $ aws ec2 describe-fpga-images --owners self
