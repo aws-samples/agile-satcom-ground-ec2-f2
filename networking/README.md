@@ -4,6 +4,11 @@
 
 In the associated blog post, we use the Custom Logic Streaming Data Engine (CL_SDE) example to generate traffic. In the future, a packet generator-responder topology with two EC2 instances will be supported, which will include the Elastic Network Adapter (ENA) offload functionality to provide the full end-to-end functionality that DPDK offers. It, too, will leverage CL_SDE, so this is a foundational step you'll need to take to work with DPDK on F2.
 
+### Prerequisites
+Build on SDK 2.1.1
+
+Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga-preview/blob/main/hdk/cl/examples/cl_sde/README.md)
+
 To use the CL_SDE, you'll first need to build an AFI with the CL_SDE using the process described in the documentation here: [AWS F2 FPGA](https://github.com/aws/aws-fpga-preview?tab=readme-ov-file#build-accelerator-afi-using-hdk-design-flow)
 
 After building the AFI, you'll identify the image IDs and load them into an available FPGA slot so that you can use them for throughput testing.
