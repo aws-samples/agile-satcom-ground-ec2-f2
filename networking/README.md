@@ -34,16 +34,10 @@ After building the AFI, you'll identify the image IDs and load them into an avai
     $ ./aws_build_dcp_from_cl.py --mode small_shell --cl cl_sde
 ```
 
-3. Continue with the build process starting with step 5 here: [AWS FPGA Github repo](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md#step-5-explore-build-artifacts)
+3. Continue with the build process starting with step 5 here (deep link): [AWS FPGA Github repo](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md#step-5-explore-build-artifacts)
 
-4. After the build process completes, identify your AFI and AGFI.
+4. Continue through step 8 to produce the output shown in the blog post.
 
-```bash
-    $ aws ec2 describe-fpga-images --owners self
-```
+Your throughput results should be on the order of 10-12 gigabytes per second with this single-instance test.
 
-The output should look similar to this:
-
-
-
-
+When used in an an end-to-end topology with a separate packet generator instance or an SDR, expect 12.5 Gbps throughput less some overhead for buffering per FPGA. You should be able to process several hundred megahertz of RF bandwidth per FPGA.
