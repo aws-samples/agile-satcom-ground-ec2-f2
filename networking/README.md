@@ -8,6 +8,8 @@ To use the CL_SDE, you'll first need to build an AFI with the CL_SDE using the p
 
 After building the AFI, you'll identify the image IDs and load them into an available FPGA slot so that you can use them for throughput testing.
 
+*** Note: Disregard the Pre-generated AFI ID and AGFI ID in the Metadata table at the bottom of the page here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga-preview/blob/main/hdk/cl/examples/cl_sde/README.md) You must build and load the CL_SDE in your account as described in the steps below under Configuration.
+
 ### Configuration
 1. Pre-install the FPGA Management tools by sourcing the sdk_setup.sh script in the AWS F2 github repository.
 
@@ -32,6 +34,8 @@ After building the AFI, you'll identify the image IDs and load them into an avai
 ```bash
     $ aws ec2 describe-fpga-images --owners self
 ```
+
+The output should look similar to this:
 
 
 
