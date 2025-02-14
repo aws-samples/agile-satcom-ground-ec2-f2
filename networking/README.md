@@ -15,31 +15,31 @@ After building the AFI, you'll identify the associated AFI and AGFI IDs and load
 1. Set the AWS_FPGA_REPO_DIR:
 
 ```bash
-    $ AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
+    AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
 ```
 2. Set the HDK_DIR:
 
 ```bash
-    $ INSTALL_DIR=/home/ubuntu/installations
+    INSTALL_DIR=/home/ubuntu/installations
 ```
 
 3. Clone the repo:
 
 ```bash
-    $ git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
+    git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
 ```
 
 4. Change to $AWS_FPGA_REPO_DIR and source the hdk setup script:
 
 ```bash
-    $ cd $AWS_FPGA_REPO_DIR
-    $ source hdk_setup.sh
+    cd $AWS_FPGA_REPO_DIR
+    source hdk_setup.sh
 ```
 
 5. After the setup is complete, set the CL_DIR variable:
 
 ```bash
-    $ cd $HDK_DIR/cl/examples/
+    cd $HDK_DIR/cl/examples/
 ```
 
 
@@ -47,19 +47,19 @@ After building the AFI, you'll identify the associated AFI and AGFI IDs and load
 1. Pre-install the FPGA Management tools by sourcing the sdk_setup.sh script in the AWS F2 github repository.
 
 ```bash
-    $ cd aws-fpga
-    $ source sdk_setup.sh
+    cd aws-fpga
+    source sdk_setup.sh
 ```
 
 2. Next, build the CL_SDE AFI. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
 
 ```bash
-    $ cd hdk/cl/examples/cl_sde
+    cd hdk/cl/examples/cl_sde
 
     $export CL_DIR=$(pwd)
     cd build/scripts
 
-    $ ./aws_build_dcp_from_cl.py --mode small_shell --cl cl_sde
+    ./aws_build_dcp_from_cl.py --mode small_shell --cl cl_sde
 ```
 
 3. Continue with the build process starting with step 5 here (deep link): [AWS FPGA Github repo](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md#step-5-explore-build-artifacts)
