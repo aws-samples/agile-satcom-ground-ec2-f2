@@ -12,7 +12,9 @@ To use the CL_SDE, you'll first need to build an AFI with the CL_SDE using the p
 After building the AFI, you'll identify the associated AFI and AGFI IDs and load this into an available FPGA slot so that you can use them for throughput testing.
 
 ### Prerequisites
-1. Set the AWS_FPGA_REPO_DIR:
+0. Create an IAM role for the instance that grants the appropriate permissions for FPGA AFI viewing and loading operations.
+
+2. Set the AWS_FPGA_REPO_DIR:
 
 ```bash
     AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
@@ -71,14 +73,7 @@ INFO: sdk_setup.sh PASSED
 
 
 ### Configuration
-1. Pre-install the FPGA Management tools by sourcing the sdk_setup.sh script in the AWS F2 github repository.
-
-```bash
-    cd aws-fpga
-    source sdk_setup.sh
-```
-
-2. Next, build the CL_SDE AFI. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
+1. Next, build the CL_SDE AFI. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
 
 ```bash
     cd hdk/cl/examples/cl_sde
@@ -89,9 +84,9 @@ INFO: sdk_setup.sh PASSED
     ./aws_build_dcp_from_cl.py --mode small_shell --cl cl_sde
 ```
 
-3. Continue with the build process starting with step 5 here (deep link): [AWS FPGA Github repo](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md#step-5-explore-build-artifacts)
+2. Continue with the build process starting with step 5 here (deep link): [AWS FPGA Github repo](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md#step-5-explore-build-artifacts)
 
-4. Continue through step 8 to produce the output shown in the blog post.
+3. Continue through step 8 to produce the output shown in the blog post.
 
 Your throughput results should be on the order of 9-11 gigabytes per second with this single-instance test.
 
