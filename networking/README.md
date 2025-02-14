@@ -37,12 +37,14 @@ After building the AFI, you'll identify the associated AFI and AGFI IDs and load
 ```
 Monitor for success messages. You should see the following:
 
+```bash
 INFO: Setting up environment variables
 INFO: Using vivado v2024.1 (64-bit)
 INFO: VIVADO_TOOL_VERSION is 2024.1 
 INFO: HDK shell is up-to-date
 WARNING: Don't forget to set the CL_DIR variable for the directory of your Custom Logic.
 INFO: AWS HDK setup PASSED.
+```
 
 5. Source the sdk setup script:
 
@@ -51,6 +53,7 @@ INFO: AWS HDK setup PASSED.
 ```
 Monitor for success messages. You should see the following:
 
+```bash
 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 AWS FPGA: Copying Amazon FPGA Image (AFI) Management Tools to /usr/local/bin
 AWS FPGA: Installing shared library to /usr/local/lib
@@ -58,6 +61,7 @@ AWS FPGA: Installing shared library to /usr/local/lib
 AWS FPGA: Done with Amazon FPGA Image (AFI) Management Tools install.
 Done with SDK install.
 INFO: sdk_setup.sh PASSED
+```
 
 6. 
 
