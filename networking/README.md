@@ -23,13 +23,13 @@ AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
 INSTALL_DIR=/home/ubuntu/installations
 ```
 
-3. Clone the repo:
+3. Clone the repository:
 
 ```bash
 git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
 ```
 
-4. Change to $AWS_FPGA_REPO_DIR and source the hdk setup script:
+4. Change to the $AWS_FPGA_REPO_DIR and source the hdk setup script:
 
 ```bash
 cd $AWS_FPGA_REPO_DIR
@@ -86,9 +86,27 @@ cd $HDK_DIR/cl/examples/
 
 
 ### Configuration
-1. 
-  
-2. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
+1. Software installation and build phase:
+```bash
+cd $SDK_DIR/apps/virtual-ethernet/scripts
+sudo ./virtual_ethernet_install.py $INSTALL_DIR
+```
+
+2.  System setup and device bind phase, e.g. on instance boot (not necessary if completed above):
+```bash
+sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
+cd $SDK_DIR/apps/virtual-ethernet/scripts
+sudo ./virtual_ethernet_setup.py $INSTALL_DIR/dpdk 0
+```
+
+3. Testpmd application setup and start phase:
+```bash
+cd $INSTALL_DIR/dpdk
+sudo ./build/app/dpdk-testpmd -l 0-1  -- --port-topology=loop --auto-start --tx-first --stats-period=3
+```
+
+
+4. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
 
 ```bash
     cd hdk/cl/examples/cl_sde
