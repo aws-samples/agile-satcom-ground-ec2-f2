@@ -63,7 +63,11 @@ Done with SDK install.
 INFO: sdk_setup.sh PASSED
 ```
 
-6. 
+6. Next, load the CL_SDE AFI.
+
+```bash
+sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
+```
 
 ```bash
     cd $HDK_DIR/cl/examples/
@@ -71,13 +75,9 @@ INFO: sdk_setup.sh PASSED
 
 
 ### Configuration
-1. Next, load the CL_SDE AFI.
-
-```bash
-sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
-```
+1. 
   
-3. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
+2. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
 
 ```bash
     cd hdk/cl/examples/cl_sde
@@ -87,8 +87,6 @@ sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
 
     ./aws_build_dcp_from_cl.py --mode small_shell --cl cl_sde
 ```
-
-2. Continue with the build process starting with step 5 here (deep link): [AWS FPGA Github repo](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md#step-5-explore-build-artifacts)
 
 3. Continue through step 8 to produce the output shown in the blog post.
 
