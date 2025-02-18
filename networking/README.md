@@ -15,24 +15,24 @@ After building the AFI, you'll identify the associated AFI and AGFI IDs and load
 1. Set the AWS_FPGA_REPO_DIR:
 
 ```bash
-    AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
+AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
 ```
 2. Set the HDK_DIR:
 
 ```bash
-    INSTALL_DIR=/home/ubuntu/installations
+INSTALL_DIR=/home/ubuntu/installations
 ```
 
 3. Clone the repo:
 
 ```bash
-    git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
+git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
 ```
 
 4. Change to $AWS_FPGA_REPO_DIR and source the hdk setup script:
 
 ```bash
-    cd $AWS_FPGA_REPO_DIR
+cd $AWS_FPGA_REPO_DIR
     source hdk_setup.sh
 ```
 Monitor for success messages. You should see the following:
@@ -49,7 +49,7 @@ INFO: AWS HDK setup PASSED.
 5. Source the sdk setup script:
 
 ```bash
-    source sdk_setup.sh
+source sdk_setup.sh
 ```
 Monitor for success messages. You should see the following:
 
@@ -70,7 +70,7 @@ sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
 ```
 
 ```bash
-    cd $HDK_DIR/cl/examples/
+cd $HDK_DIR/cl/examples/
 ```
 
 
