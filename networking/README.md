@@ -12,9 +12,7 @@ To use the CL_SDE, you'll first need to build an AFI with the CL_SDE using the p
 After building the AFI, you'll identify the associated AFI and AGFI IDs and load this into an available FPGA slot so that you can use them for throughput testing.
 
 ### Prerequisites
-0. Create an IAM role for the instance that grants the appropriate permissions for FPGA AFI viewing and loading operations.
-
-2. Set the AWS_FPGA_REPO_DIR:
+1. Set the AWS_FPGA_REPO_DIR:
 
 ```bash
     AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
@@ -73,7 +71,13 @@ INFO: sdk_setup.sh PASSED
 
 
 ### Configuration
-1. Next, build the CL_SDE AFI. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
+1. Next, load the CL_SDE AFI.
+
+```bash
+sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
+```
+  
+3. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
 
 ```bash
     cd hdk/cl/examples/cl_sde
