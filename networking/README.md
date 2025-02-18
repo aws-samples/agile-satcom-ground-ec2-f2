@@ -106,19 +106,4 @@ sudo ./build/app/dpdk-testpmd -l 0-1  -- --port-topology=loop --auto-start --tx-
 ```
 
 
-4. Be sure to use the small_shell option, which is the only shell supported as of 12/12/24.
 
-```bash
-    cd hdk/cl/examples/cl_sde
-
-    $export CL_DIR=$(pwd)
-    cd build/scripts
-
-    ./aws_build_dcp_from_cl.py --mode small_shell --cl cl_sde
-```
-
-3. Continue through step 8 to produce the output shown in the blog post.
-
-Your throughput results should be on the order of 9-11 gigabytes per second with this single-instance test.
-
-When used in an an end-to-end topology with a separate packet generator instance or an SDR, expect 12.5 Gbps throughput less some overhead for buffering per FPGA. You should be able to process several hundred megahertz of RF bandwidth per FPGA.
