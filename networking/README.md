@@ -68,6 +68,17 @@ INFO: sdk_setup.sh PASSED
 ```bash
 sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
 ```
+View the FPGA slot status to see the local image loaded successfully:
+```bash
+sudo fpga-describe-local-image -S 0
+```
+The output should look like this:
+
+```bash
+AFI          0       agfi-0925b211f5a81b071  loaded            0        ok               0       0x10212415
+AFIDEVICE    0       0x1d0f      0xf002      0000:34:00.0
+
+```
 
 ```bash
 cd $HDK_DIR/cl/examples/
