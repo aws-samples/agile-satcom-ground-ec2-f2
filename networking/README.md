@@ -123,7 +123,7 @@ Port statistics ====================================
   Tx-pps:      1082088          Tx-bps:  70915756536
   ############################################################################
 ```
-In this example, the RX-bps field shows about 71 Gbps, which equates to about 7 GB/s.
+In this example, the RX-bps field shows about 71 Gbps, which equates to about 8.86 GB/s.
 
 You can exit this screen with a ctrl-c. After that, you'll get a final screen similar to this:
 
