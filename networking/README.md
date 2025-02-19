@@ -92,10 +92,8 @@ cd $SDK_DIR/apps/virtual-ethernet/scripts
 sudo ./virtual_ethernet_install.py $INSTALL_DIR
 ```
 
-2.  System setup and device bind phase, e.g. on instance boot (not necessary if completed above):
+2.  System setup and device bind phase:
 ```bash
-sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
-cd $SDK_DIR/apps/virtual-ethernet/scripts
 sudo ./virtual_ethernet_setup.py $INSTALL_DIR/dpdk 0
 ```
 
