@@ -4,12 +4,17 @@
 
 In the [associated blog post](https://aws.amazon.com/blogs/publicsector/agile-satellite-communication-ground-systems-with-amazon-ec2-f2-fpga-solutions/), we use the Custom Logic Streaming Data Engine (CL_SDE) example to generate traffic. In the future, a packet generator-responder topology with two EC2 instances will be supported, which will include the Elastic Network Adapter (ENA) offload functionality to provide the full end-to-end functionality that DPDK offers. It, too, will leverage CL_SDE, so this is a foundational step you'll need to take to work with DPDK on F2.
 
-### Prerequisites
+
+### Background
+To follow this example, build an EC2 F2 instance in your AWS account. These steps require an FPGA to complete. The example on this page is built on an f2.6xlarge instance, which has a single FPGA slot, but it works the same way on any F2 instance. 
+
+Note that the F2 instance in this example requires tools that are included in the AWS F2 Developer AMI, so be sure to build the instance from that AMI. You can find the F2 Developer AMI by searching for it in the public AMI catalog in any AWS Region where F2 instances are supported. In the AMI catalog, the AMI is called:
+```bash
+F2 FPGA Developer AMI - 1.16.2 - Xilinx Tools 2024.1
+```
+The version number may differ but you'll be able to find it by the F2 FPGA Developer AMI prefix.
+
 Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md)
-
-To use the CL_SDE, you'll first need to build an AFI with the CL_SDE using the process described in the documentation here: [AWS F2 FPGA](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md)
-
-After building the AFI, you'll identify the associated AFI and AGFI IDs and load this into an available FPGA slot so that you can use them for throughput testing.
 
 ### Prerequisites
 1. Set the AWS_FPGA_REPO_DIR:
@@ -118,6 +123,8 @@ Port statistics ====================================
   Tx-pps:      1082088          Tx-bps:  70915756536
   ############################################################################
 ```
+In this example, the RX-bps field shows about 71 Gbps, which equates to about 7 GB/s.
+
 You can exit this screen with a ctrl-c. After that, you'll get a final screen similar to this:
 
 ```bash
