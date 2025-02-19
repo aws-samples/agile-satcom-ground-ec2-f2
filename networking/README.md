@@ -105,5 +105,46 @@ cd $INSTALL_DIR/dpdk
 sudo ./build/app/dpdk-testpmd -l 0-1  -- --port-topology=loop --auto-start --tx-first --stats-period=3
 ```
 
+4. Monitor your results. You should see a screen with port statistics that looks like this:
 
+```bash
+Port statistics ====================================
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 58142968   RX-missed: 0          RX-bytes:  476307193856
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 58143000   TX-errors: 0          TX-bytes:  476307456000
 
+  Throughput (since last show)
+  Rx-pps:      1082088          Rx-bps:  70915734696
+  Tx-pps:      1082088          Tx-bps:  70915756536
+  ############################################################################
+```
+You can exit this screen with a ctrl-c. After that, you'll get a final screen similar to this:
+
+```bash
+Waiting for lcores to finish...
+
+  ---------------------- Forward statistics for port 0  ----------------------
+  RX-packets: 203551792      RX-dropped: 0             RX-total: 203551792
+  TX-packets: 203551824      TX-dropped: 0             TX-total: 203551824
+  ----------------------------------------------------------------------------
+
+  +++++++++++++++ Accumulated forward statistics for all ports+++++++++++++++
+  RX-packets: 203551792      RX-dropped: 0             RX-total: 203551792
+  TX-packets: 203551824      TX-dropped: 0             TX-total: 203551824
+  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Done.
+
+Stopping port 0...
+Stopping ports...
+Done
+
+Shutting down port 0...
+Closing ports...
+Done
+
+Bye...
+
+```
