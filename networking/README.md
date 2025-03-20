@@ -17,19 +17,24 @@ The version number may differ but you'll be able to find it by the F2 FPGA Devel
 * Using your own AMI on F2 - per the [HDK Readme](https://github.com/aws/aws-fpga/tree/f2/hdk#step-7-load-accelerator-afi-on-f2-instance) AWS recommends using AMIs with at least Ubuntu 20.04 and kernel version 5.15. This `cl_sde` example was tested with an Ubuntu 22.04 LTS Community AMI `ubuntu-jammy-22.04-amd64-server-20240927` which you can find in the [AMI Catalog](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#AMICatalog:)
 ** *Note:* The DPDK kernel used in this example was built with gcc-12. If the Ubuntu distribution you are using defaults to a lower gcc version the `virtual_ethernet_install.py` installation will fail. You can update your gcc version as shown [here](https://phoenixnap.com/kb/install-gcc-ubuntu)
 
-Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md)
+Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md). 
+
+Execute steps 1-6 in the [HDK Readme](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md) to build the `cl_sde` Design Checkpoint (DCP) and Amazon FPGA Image (AFI) 
 
 ### Prerequisites
+On your F2 instance: -
+
 1. Set the AWS_FPGA_REPO_DIR:
 
 ```bash
 AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
 ```
-2. Set the HDK_DIR:
+2. Set the INSTALL_DIR:
 
 ```bash
 INSTALL_DIR=/home/ubuntu/installations
 ```
+This is the location the DPDK will be installed into.
 
 3. Clone the repository:
 
@@ -74,7 +79,7 @@ INFO: sdk_setup.sh PASSED
 6. Next, load the CL_SDE AFI.
 
 ```bash
-sudo fpga-load-local-image -S 0 -I agfi-0925b211f5a81b071
+sudo fpga-load-local-image -S 0 -I <your-agfi-id>
 ```
 View the FPGA slot status to see the local image loaded successfully:
 ```bash
@@ -83,7 +88,7 @@ sudo fpga-describe-local-image -S 0
 The output should look like this:
 
 ```bash
-AFI          0       agfi-0925b211f5a81b071  loaded            0        ok               0       0x10212415
+AFI          0       your-agfi-id  loaded            0        ok               0       0x10212415
 AFIDEVICE    0       0x1d0f      0xf002      0000:34:00.0
 
 ```
@@ -97,13 +102,14 @@ cd $HDK_DIR/cl/examples/
 1. Software installation and build phase:
 ```bash
 cd $SDK_DIR/apps/virtual-ethernet/scripts
-sudo ./virtual_ethernet_install.py $INSTALL_DIR
+./virtual_ethernet_install.py $INSTALL_DIR
 ```
 
 2.  System setup and device bind phase:
 ```bash
 sudo ./virtual_ethernet_setup.py $INSTALL_DIR/dpdk 0
 ```
+Change the 0 to a 1 if using slot 1 on a multi-instance F2.
 
 3. Testpmd application setup and start phase:
 ```bash
@@ -131,8 +137,6 @@ In this example, the RX-bps field shows about 71 Gbps, which equates to about 8.
 You can exit this screen with a ctrl-c. After that, you'll get a final screen similar to this:
 
 ```bash
-Waiting for lcores to finish...
-
   ---------------------- Forward statistics for port 0  ----------------------
   RX-packets: 203551792      RX-dropped: 0             RX-total: 203551792
   TX-packets: 203551824      TX-dropped: 0             TX-total: 203551824
