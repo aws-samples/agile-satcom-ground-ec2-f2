@@ -2,17 +2,20 @@
 
 ### Overview
 
-In the [associated blog post](https://aws.amazon.com/blogs/publicsector/agile-satellite-communication-ground-systems-with-amazon-ec2-f2-fpga-solutions/), we use the Custom Logic Streaming Data Engine (CL_SDE) example to generate traffic. In the future, a packet generator-responder topology with two EC2 instances will be supported, which will include the Elastic Network Adapter (ENA) offload functionality to provide the full end-to-end functionality that DPDK offers. It, too, will leverage CL_SDE, so this is a foundational step you'll need to take to work with DPDK on F2.
+In the [associated blog post](https://aws.amazon.com/blogs/publicsector/agile-satellite-communication-ground-systems-with-amazon-ec2-f2-fpga-solutions/), we use the Custom Logic Streaming Data Engine (CL_SDE) example to generate traffic. A [packet generator-responder topology](https://github.com/aws/aws-fpga/blob/f2/sdk/apps/virtual-ethernet/doc/Virtual_Ethernet_Application_Guide.md#packetgen-dual-instance-loopback) with two EC2 instances is also supported, which includes the Elastic Network Adapter (ENA) offload functionality to provide the full end-to-end functionality that [DPDK](https://www.dpdk.org/) offers. It, too, leverages CL_SDE, so this is a foundational step you'll need to take to work with DPDK on F2.
 
 
 ### Background
-To follow this example, build an EC2 F2 instance in your AWS account. These steps require an FPGA to complete. The example on this page is built on an f2.6xlarge instance, which has a single FPGA slot, but it works the same way on any F2 instance. 
+You can build and run the [virtual ethernet](https://github.com/aws/aws-fpga/tree/f2/sdk/apps/virtual-ethernet) DPDK-based F2 examples in multiple ways: -
 
-Note that the F2 instance in this example requires tools that are included in the AWS F2 Developer AMI, so be sure to build the instance from that AMI. You can find the F2 Developer AMI by searching for it in the public AMI catalog in any AWS Region where F2 instances are supported. In the AMI catalog, the AMI is called:
+* build and run it on an F2 instance directly - use the AWS F2 Developer AMI which you can find by searching for it in the public AMI catalog in any AWS Region where F2 instances are supported. In the AMI catalog, the AMI is called:
 ```bash
 F2 FPGA Developer AMI - 1.16.2 - Xilinx Tools 2024.1
 ```
 The version number may differ but you'll be able to find it by the F2 FPGA Developer AMI prefix.
+
+* Using your own AMI on F2 - per the [HDK Readme](https://github.com/aws/aws-fpga/tree/f2/hdk#step-7-load-accelerator-afi-on-f2-instance) AWS recommends using AMIs with at least Ubuntu 20.04 and kernel version 5.15. This `cl_sde` example was tested with an Ubuntu 22.04 LTS Community AMI `ubuntu-jammy-22.04-amd64-server-20240927` which you can find in the [AMI Catalog](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#AMICatalog:)
+** *Note:* The DPDK kernel used in this example was built with gcc-12. If the Ubuntu distribution you are using defaults to a lower gcc version the `virtual_ethernet_install.py` installation will fail. You can update your gcc version as shown [here](https://phoenixnap.com/kb/install-gcc-ubuntu)
 
 Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md)
 
