@@ -8,7 +8,7 @@ In the [associated blog post](https://aws.amazon.com/blogs/publicsector/agile-sa
 ### Background
 You can build and run the [virtual ethernet](https://github.com/aws/aws-fpga/tree/f2/sdk/apps/virtual-ethernet) DPDK-based F2 examples in multiple ways: -
 
- build and run it on an F2 instance directly - use the AWS F2 Developer AMI which you can find by searching for it in the public AMI catalog in any AWS Region where F2 instances are supported. In the AMI catalog, the AMI is called:
+* Build and run it on an F2 instance directly - use the AWS F2 Developer AMI which you can find by searching for it in the public AMI catalog in any AWS Region where F2 instances are supported. In the AMI catalog, the AMI is called:
 ```bash
 F2 FPGA Developer AMI - 1.16.2 - Xilinx Tools 2024.1
 ```
