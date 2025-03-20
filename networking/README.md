@@ -15,7 +15,8 @@ F2 FPGA Developer AMI - 1.16.2 - Xilinx Tools 2024.1
 The version number may differ but you'll be able to find it by the F2 FPGA Developer AMI prefix.
 
 * Using your own AMI on F2 - per the [HDK Readme](https://github.com/aws/aws-fpga/tree/f2/hdk#step-7-load-accelerator-afi-on-f2-instance) AWS recommends using AMIs with at least Ubuntu 20.04 and kernel version 5.15. This `cl_sde` example was tested with an Ubuntu 22.04 LTS Community AMI `ubuntu-jammy-22.04-amd64-server-20240927` which you can find in the [AMI Catalog](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#AMICatalog:)
-> [!NOTE] The DPDK kernel used in this example was built with gcc-12. If the Ubuntu distribution you are using defaults to a lower gcc version the `virtual_ethernet_install.py` installation will fail. You can update your gcc version as shown [here](https://phoenixnap.com/kb/install-gcc-ubuntu)
+> [!NOTE]
+> The DPDK kernel used in this example was built with gcc-12. If the Ubuntu distribution you are using defaults to a lower gcc version the `virtual_ethernet_install.py` installation will fail. You can update your gcc version as shown [here](https://phoenixnap.com/kb/install-gcc-ubuntu)
 
 Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md). 
 
