@@ -43,12 +43,15 @@ This is the location the DPDK will be installed into.
 git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
 ```
 
-4. Change to the $AWS_FPGA_REPO_DIR and source the hdk setup script:
+4. Change to the $AWS_FPGA_REPO_DIR and, if using the AWS F2 Developer AMI, source the hdk setup script:
 
 ```bash
 cd $AWS_FPGA_REPO_DIR
 source hdk_setup.sh
 ```
+> [!NOTE]
+> You do not need to execute this step if using your own Ubuntu LTS AMI
+
 Monitor for success messages. You should see the following:
 
 ```bash
@@ -65,6 +68,8 @@ INFO: AWS HDK setup PASSED.
 ```bash
 source sdk_setup.sh
 ```
+> [!NOTE]
+> This step is required for all AMI types. 
 Monitor for success messages. You should see the following:
 
 ```bash
