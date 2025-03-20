@@ -65,7 +65,7 @@ INFO: AWS HDK setup PASSED.
 
 5. Source the sdk setup script:
 > [!NOTE]
-> This step is required for all AMI types. 
+> This step is required for all AMI types, since the SDK includes the [FPGA Management Tools](https://github.com/aws/aws-fpga/tree/f2/sdk/userspace/fpga_mgmt_tools)
 
 ```bash
 source sdk_setup.sh
