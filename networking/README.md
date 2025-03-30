@@ -45,7 +45,7 @@ git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
 
 4. Change to the $AWS_FPGA_REPO_DIR and, if using the AWS F2 Developer AMI, source the hdk setup script:
 > [!NOTE]
-> You do not need to execute this step if using your own Ubuntu LTS AMI
+> Skip this step if using your own Ubuntu LTS AMI.
 
 ```bash
 cd $AWS_FPGA_REPO_DIR
@@ -70,6 +70,8 @@ INFO: AWS HDK setup PASSED.
 ```bash
 source sdk_setup.sh
 ```
+When prompted to restart services, tab to 'Ok' and hit Enter.
+
 Monitor for success messages. You should see the following:
 
 ```bash
