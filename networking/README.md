@@ -49,6 +49,9 @@ git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
 
 ```bash
 cd $AWS_FPGA_REPO_DIR
+```
+
+```bash
 source hdk_setup.sh
 ```
 
