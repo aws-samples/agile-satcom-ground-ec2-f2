@@ -87,7 +87,7 @@ Done with SDK install.
 INFO: sdk_setup.sh PASSED
 ```
 
-6. Next, load the CL_SDE AFI.
+6. Next, load the CL_SDE AGFI. The AWS-provided AGFI ID is located at the bottom of this page: [AWS F2 Github repository] (https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md)
 
 ```bash
 sudo fpga-load-local-image -S 0 -I <your-agfi-id>
