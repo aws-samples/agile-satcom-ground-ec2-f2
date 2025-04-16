@@ -298,10 +298,15 @@ AFIDEVICE    0       0x1d0f      0xf002      0000:34:00.0
 
 ```bash
 ifconfig
+```
+If prompted, follow the steps to install ifconfig.
 
+```bash
 python3 $INSTALL_DIR/dpdk/usertools/dpdk-devbind.py --status
-
+```
 Output should look like this:
+
+```bash
 Network devices using kernel driver
 ===================================
 0000:27:00.0 'Elastic Network Adapter (ENA) ec20' if=ens5 drv=ena unused= *Active*
