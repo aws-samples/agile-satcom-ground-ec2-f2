@@ -507,3 +507,13 @@ sudo LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu ./build/app/pktgen -l 0,1 -
 ```
 
 2. Monitor the Packet Generator Instance and the Virtual Ethernet Instance SSH windows to see the performance in real time.
+
+3. While the packet generator is running, you can use the set 0 commands to change parameters and see the performance differences in the application window above. Example:
+
+```bash
+set 0 size 512
+```
+changes the packet size to 512 bytes
+
+```bash
+
