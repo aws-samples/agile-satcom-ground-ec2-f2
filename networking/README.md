@@ -38,7 +38,7 @@ VPC Networking
 1. For the single-instance F2 example, a VPC with a single subnet is required. You must configure access to your EC2 instance so that you can connect to it on the CLI for to complete these steps.
 
 2. For the two-instance example, a VPC with two subnets is required. Each instance requires a network interface in each subnet.
-   >[!Note]
+   > [!NOTE]
    > Build your VPC in a Region where [F2 instances are available](https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-regions.html). Both subnets must be in the same Availability Zone.
 
 Placement Group
