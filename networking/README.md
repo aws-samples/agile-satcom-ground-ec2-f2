@@ -294,12 +294,15 @@ AFIDEVICE    0       0x1d0f      0xf002      0000:34:00.0
 
 ```
 
-7. Check interface binding. Initially both network interfaces will be bound to the kernel driver.
+7. Check interface bindings. Initially both network interfaces will be bound to the kernel driver.
 
+First, use ifconfig to verify that both interfaces are present and check to see how they are enumerated.
 ```bash
 ifconfig
 ```
 If prompted, follow the steps to install ifconfig.
+
+Check the bindings:
 
 ```bash
 python3 $INSTALL_DIR/dpdk/usertools/dpdk-devbind.py --status
