@@ -46,7 +46,7 @@ Execute steps 1-6 in the [HDK Readme](https://github.com/aws/aws-fpga/blob/f2/hd
 
 #### Placement Group
 
-1. In the two-instance example, the packet generator instance and the F2 instance must be placed in a Cluster Placement Group.
+1. In the two-instance example, the packet generator instance and the F2 instance must be placed in a [Cluster Placement Group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-placement-group.html).
 
 
 ### F2 Single-Instance Virtual Ethernet Instance initial steps
