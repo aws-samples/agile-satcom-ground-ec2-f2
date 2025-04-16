@@ -34,7 +34,8 @@ Execute steps 1-6 in the [HDK Readme](https://github.com/aws/aws-fpga/blob/f2/hd
 
 
 ### Prerequisites
-### VPC Networking
+
+#### VPC Networking
 
 1. For the single-instance F2 example, a VPC with a single subnet in a [Region where F2 instances are supported](https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-regions.html) is required. You must configure access to your EC2 instance so that you can connect to it on the CLI for to complete these steps.
 
@@ -43,7 +44,7 @@ Execute steps 1-6 in the [HDK Readme](https://github.com/aws/aws-fpga/blob/f2/hd
 > [!NOTE]
 > Build your VPC in a Region where [F2 instances are available](https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-regions.html). Both subnets must be in the same Availability Zone.
 
-### Placement Group
+#### Placement Group
 
 1. In the two-instance example, the packet generator instance and the F2 instance must be placed in a Cluster Placement Group.
 
