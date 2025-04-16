@@ -15,6 +15,7 @@ F2 FPGA Developer AMI - 1.16.2 - Xilinx Tools 2024.1
 The version number may differ from the one listed above, but you'll be able to find it by the F2 FPGA Developer AMI prefix.
 
 * Using your own AMI on F2 - per the [HDK Readme](https://github.com/aws/aws-fpga/tree/f2/hdk#step-7-load-accelerator-afi-on-f2-instance) AWS recommends using AMIs with at least Ubuntu 20.04 and kernel version 5.15. This `cl_sde` example was tested with an Ubuntu 22.04 LTS Community AMI `ubuntu-jammy-22.04-amd64-server-20240927` which you can find in the [AMI Catalog](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#AMICatalog:)
+
 > [!NOTE]
 > The DPDK kernel used in this example was built with gcc-12. If the Ubuntu distribution you are using defaults to a lower gcc version the `virtual_ethernet_install.py` installation will fail. You can update your gcc version to version 12 as shown [here](https://phoenixnap.com/kb/install-gcc-ubuntu)
 
@@ -33,21 +34,21 @@ Execute steps 1-6 in the [HDK Readme](https://github.com/aws/aws-fpga/blob/f2/hd
 
 
 ### Prerequisites
-VPC Networking
+### VPC Networking
 
-1. For the single-instance F2 example, a VPC with a single subnet is required. You must configure access to your EC2 instance so that you can connect to it on the CLI for to complete these steps.
+1. For the single-instance F2 example, a VPC with a single subnet in a [Region where F2 instances are supported](https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-regions.html) is required. You must configure access to your EC2 instance so that you can connect to it on the CLI for to complete these steps.
 
 2. For the two-instance example, a VPC with two subnets is required. Each instance requires a network interface in each subnet.
 
 > [!NOTE]
 > Build your VPC in a Region where [F2 instances are available](https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-regions.html). Both subnets must be in the same Availability Zone.
 
-Placement Group
+### Placement Group
 
 1. In the two-instance example, the packet generator instance and the F2 instance must be placed in a Cluster Placement Group.
 
 
-Single-Instance Prerequisites
+### F2 Single-Instance Virtual Ethernet Instance initial steps
 
 On your F2 instance (e.g. f2.6xlarge): -
 
@@ -135,7 +136,7 @@ cd $HDK_DIR/cl/examples/
 ```
 
 
-### Configuration
+### F2 Single-Instance Virtual Ethernet build and test phases
 1. Software installation and build phase:
 ```bash
 cd $SDK_DIR/apps/virtual-ethernet/scripts
@@ -197,3 +198,17 @@ Done
 Bye...
 
 ```
+
+## Two-Instance Test
+
+### Instance build overview
+
+1. Follow the Prerequisites and Placement Group guidance above.
+
+2. Build your Amazon EC2 F2 Virtual Ethernet Instance with two Elastic Network Adapters in two subnets in the same Availability Zone. If you build this instance from your own AMI or from an AMI that does not include gcc-12, install gcc-12 as outlined in the Background section above.
+
+3. Build your Packet Generator Instance with two Elastic Network Adapters in the same two subnets as the F2 instance uses. An m6i.8xlarge provides good performance for the Packet Generator Instance.
+
+4. Ensure that both instances are in the Cluster Placement Group that you created earlier. They will work if they are not in the Cluster Placement Group, but network performance will be suboptimal.
+
+5. 
