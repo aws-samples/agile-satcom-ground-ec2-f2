@@ -506,7 +506,7 @@ cd $INSTALL_DIR/pktgen-dpdk
 sudo LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu ./build/app/pktgen -l 0,1 -n 16 --proc-type auto --log-level 7 --socket-mem 4096 --file-prefix pg -- -T -j -P -m [1].0 -f $SDK_DIR/apps/virtual-ethernet/scripts/pktgen-ena.pkt
 ```
 
-2. Monitor the Packet Generator Instance and the Virtual Ethernet Instance SSH windows to see the performance in real time.
+2. Monitor the Packet Generator Instance and the Virtual Ethernet Instance SSH windows to see the performance in real time. Monitor the Mbits/s Rx/Tx in green near the top of the screen to see the throughput in megabits per second. With a packet size of 9000 bytes, you should see the Jumbos count incrementing.
 
 3. While the packet generator is running, you can use the set 0 commands to change parameters and see the performance differences in the application window above. Example:
 
