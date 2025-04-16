@@ -25,7 +25,7 @@ The version number may differ from the one listed above, but you'll be able to f
 
 3. Build your Amazon EC2 instance or instances according to your choice in the previous step. You can use the same F2 instance for both examples.
 
->[!NOTE]
+> [!NOTE]
 > The two-instance configuration requires two network interfaces for both the packet generator and the F2 instance. When building an EC2 instance from an Ubuntu image, the network configuration is simplified if you create the instance with two Elastic Network Adapters rather than creating the instances with one network adapter and adding the second one later. See Prerequisites below for more details.
 
 
