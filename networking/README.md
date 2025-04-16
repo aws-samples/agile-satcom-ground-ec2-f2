@@ -6,23 +6,46 @@ In the [associated blog post](https://aws.amazon.com/blogs/publicsector/agile-sa
 
 
 ### Background
-You can build and run the [virtual ethernet](https://github.com/aws/aws-fpga/tree/f2/sdk/apps/virtual-ethernet) DPDK-based F2 examples in multiple ways: -
+You can build and run the [virtual ethernet](https://github.com/aws/aws-fpga/tree/f2/sdk/apps/virtual-ethernet) DPDK-based F2 examples in multiple ways:
 
 * Build and run it on an F2 instance directly - use the AWS F2 Developer AMI which you can find by searching for it in the public AMI catalog in any AWS Region where F2 instances are supported. In the AMI catalog, the AMI is called:
 ```bash
 F2 FPGA Developer AMI - 1.16.2 - Xilinx Tools 2024.1
 ```
-The version number may differ but you'll be able to find it by the F2 FPGA Developer AMI prefix.
+The version number may differ from the one listed above, but you'll be able to find it by the F2 FPGA Developer AMI prefix.
 
 * Using your own AMI on F2 - per the [HDK Readme](https://github.com/aws/aws-fpga/tree/f2/hdk#step-7-load-accelerator-afi-on-f2-instance) AWS recommends using AMIs with at least Ubuntu 20.04 and kernel version 5.15. This `cl_sde` example was tested with an Ubuntu 22.04 LTS Community AMI `ubuntu-jammy-22.04-amd64-server-20240927` which you can find in the [AMI Catalog](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#AMICatalog:)
 > [!NOTE]
 > The DPDK kernel used in this example was built with gcc-12. If the Ubuntu distribution you are using defaults to a lower gcc version the `virtual_ethernet_install.py` installation will fail. You can update your gcc version to version 12 as shown [here](https://phoenixnap.com/kb/install-gcc-ubuntu)
 
-Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md). 
+### Before you begin
+1. Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md). 
+
+2. Choose whether you will be completing the single-instance F2 example or two-instance example with general-purpose compute packet generator and F2 responder.
+
+3. Build your Amazon EC2 instance or instances according to your choice in the previous step. You can use the same F2 instance for both examples.
+
+>[!NOTE]
+> The two-instance configuration requires two network interfaces for both the packet generator and the F2 instance. When building an EC2 instance from an Ubuntu image, the network configuration is simplified if you create the instance with two Elastic Network Adapters rather than creating the instances with one network adapter and adding the second one later.
+
 
 Execute steps 1-6 in the [HDK Readme](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md) to build the `cl_sde` Design Checkpoint (DCP) and Amazon FPGA Image (AFI). You can do this on any AWS instance type (or your own compute resources if you already have a [supported AMD toolkit vesion](https://github.com/aws/aws-fpga/blob/f2/User_Guide_AWS_EC2_FPGA_Development_Kit.md#hardware-development-kit-hdk)). Given the large size of the FPGA used for F2, AMD tools work best with at least 4 vCPU’s and 32GiB Memory. We recommend [Compute Optimized and Memory Optimized instance types](https://aws.amazon.com/ec2/instance-types/) to successfully run the synthesis of acceleration code. Developers may start coding and run simulations on low-cost `General Purpose` [instances types](https://aws.amazon.com/ec2/instance-types/).
 
+
 ### Prerequisites
+VPC Networking
+
+1. For the single-instance F2 example, a VPC with a single subnet is required. You must configure access to your EC2 instance so that you can connect to it on the CLI for to complete these steps.
+
+2. For the two-instance example, a VPC with two subnets is required. Each instance requires a network interface in each subnet.
+
+Placement Group
+
+1. In the two-instance example, the packet generator instance and the F2 instance must be placed in a Cluster Placement Group.
+
+
+Single-Instance Prerequisites
+
 On your F2 instance (e.g. f2.6xlarge): -
 
 1. Set the AWS_FPGA_REPO_DIR:
