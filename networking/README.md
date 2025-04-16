@@ -466,4 +466,44 @@ Output should be similar to step 7 in the F2 instance configuration, but with di
 ```bash
 sudo python3 $SDK_DIR/apps/virtual-ethernet/scripts/virtual_ethernet_pktgen_setup.py $INSTALL_DIR --eni_dbdf 0000:00:06.0 --eni_ethdev ens6
 ```
+Results should look like this:
 
+```bash
+______________________________
+DPDK setup complete!
+pktgen-dpdk may be run via the following steps:
+cd /home/ubuntu/installations/pktgen-dpdk sudo ./app/x86_64-native-linuxapp-gcc/pktgen -l 0,1 -n 4 --proc-type auto --log-level 7 --socket-mem 2048 --file-prefix pg -- -T -P -m [1].0 -f /home/ubuntu/aws-fpga/sdk/apps/virtual-ethernet/scripts/pktgen-ena.pkt
+______________________________
+```
+
+```bash
+python3 $INSTALL_DIR/dpdk/usertools/dpdk-devbind.py --status
+```
+
+Results should look like this:
+```bash
+Network devices using DPDK-compatible driver
+============================================
+0000:00:06.0 'Elastic Network Adapter (ENA) ec20' drv=igb_uio unused=ena
+
+Network devices using kernel driver
+===================================
+0000:00:05.0 'Elastic Network Adapter (ENA) ec20' if=ens5 drv=ena unused=igb_uio *Active*
+```
+
+9. Edit the packet generator configuration file to match the source and destination IP addresses of the DPDK network adapters, and the destination MAC address of the DPDK adapter. Also set the protocol to TCP and the packet size to 9000 bytes.
+
+```bash
+more $SDK_DIR/apps/virtual-ethernet/scripts/pktgen-ena.pkt
+```
+
+#### Start the packet generator
+
+1. Start the test.
+
+```bash
+cd $INSTALL_DIR/pktgen-dpdk
+sudo LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu ./build/app/pktgen -l 0,1 -n 16 --proc-type auto --log-level 7 --socket-mem 4096 --file-prefix pg -- -T -j -P -m [1].0 -f $SDK_DIR/apps/virtual-ethernet/scripts/pktgen-ena.pkt
+```
+
+2. Monitor the Packet Generator Instance and the Virtual Ethernet Instance SSH windows to see the performance in real time.
