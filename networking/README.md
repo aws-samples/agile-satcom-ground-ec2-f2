@@ -21,12 +21,12 @@ The version number may differ from the one listed above, but you'll be able to f
 ### Before you begin
 1. Review the example here: [AWS F2 CL_SDE example](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md). 
 
-2. Choose whether you will be completing the single-instance F2 example or two-instance example with general-purpose compute packet generator and F2 responder.
+2. Choose whether you will be completing the single-instance F2 example or [two-instance example](https://github.com/aws/aws-fpga/blob/f2/sdk/apps/virtual-ethernet/doc/Virtual_Ethernet_Application_Guide.md#packetgen-dual-instance-loopback) with a general-purpose compute Packet Generator Instance and F2 Virtual Ethernet Instance.
 
 3. Build your Amazon EC2 instance or instances according to your choice in the previous step. You can use the same F2 instance for both examples.
 
 >[!NOTE]
-> The two-instance configuration requires two network interfaces for both the packet generator and the F2 instance. When building an EC2 instance from an Ubuntu image, the network configuration is simplified if you create the instance with two Elastic Network Adapters rather than creating the instances with one network adapter and adding the second one later.
+> The two-instance configuration requires two network interfaces for both the packet generator and the F2 instance. When building an EC2 instance from an Ubuntu image, the network configuration is simplified if you create the instance with two Elastic Network Adapters rather than creating the instances with one network adapter and adding the second one later. See Prerequisites below for more details.
 
 
 Execute steps 1-6 in the [HDK Readme](https://github.com/aws/aws-fpga/blob/f2/hdk/README.md) to build the `cl_sde` Design Checkpoint (DCP) and Amazon FPGA Image (AFI). You can do this on any AWS instance type (or your own compute resources if you already have a [supported AMD toolkit vesion](https://github.com/aws/aws-fpga/blob/f2/User_Guide_AWS_EC2_FPGA_Development_Kit.md#hardware-development-kit-hdk)). Given the large size of the FPGA used for F2, AMD tools work best with at least 4 vCPU’s and 32GiB Memory. We recommend [Compute Optimized and Memory Optimized instance types](https://aws.amazon.com/ec2/instance-types/) to successfully run the synthesis of acceleration code. Developers may start coding and run simulations on low-cost `General Purpose` [instances types](https://aws.amazon.com/ec2/instance-types/).
@@ -38,6 +38,8 @@ VPC Networking
 1. For the single-instance F2 example, a VPC with a single subnet is required. You must configure access to your EC2 instance so that you can connect to it on the CLI for to complete these steps.
 
 2. For the two-instance example, a VPC with two subnets is required. Each instance requires a network interface in each subnet.
+   >[!Note]
+   > Build your VPC in a Region where [F2 instances are available](https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-instance-regions.html). Both subnets must be in the same Availability Zone.
 
 Placement Group
 
