@@ -300,9 +300,14 @@ First, use ifconfig to verify that both interfaces are present and check to see 
 ```bash
 ifconfig
 ```
-If prompted, follow the steps to install ifconfig.
+If prompted, follow the steps to install net-tools.
 
-Check the bindings:
+```bash
+sudo apt install net-tools
+```
+Make note of interface numbers (i.e., ens5, enp40s0)
+
+Check the interface bindings:
 
 ```bash
 python3 $INSTALL_DIR/dpdk/usertools/dpdk-devbind.py --status
@@ -342,3 +347,123 @@ Network devices using kernel driver
 0000:27:00.0 'Elastic Network Adapter (ENA) ec20' if=ens5 drv=ena unused=igb_uio *Active*
 [rest omitted]
 ```
+
+#### Start the throughput Virtual Ethernet test on the F2 instance
+
+1. Start the test
+
+```bash
+cd $INSTALL_DIR/dpdk
+sudo ./build/app/dpdk-testpmd -l 0-1 -- --port-topology=chained --auto-start --stats-period=3 --forward-mode=spp-eni-addr-swap
+```
+
+Keep the window open and proceed to the Packet Generator Instance configuration.
+
+### Packet Generator Instance
+
+On your Packet Generator instance (e.g. m6i.8xlarge): -
+
+1. Set the AWS_FPGA_REPO_DIR:
+
+```bash
+AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
+```
+2. Set the INSTALL_DIR:
+
+```bash
+INSTALL_DIR=/home/ubuntu/installations
+```
+This is the location the DPDK will be installed into.
+
+3. Clone the repository:
+
+```bash
+git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
+```
+
+4. Change to the $AWS_FPGA_REPO_DIR and, if using the AWS F2 Developer AMI, source the hdk setup script:
+> [!NOTE]
+> Skip this step if using your own Ubuntu LTS AMI.
+
+```bash
+cd $AWS_FPGA_REPO_DIR
+```
+
+```bash
+source hdk_setup.sh
+```
+
+Monitor for success messages. You should see the following:
+
+```bash
+INFO: Setting up environment variables
+INFO: Using vivado v2024.1 (64-bit)
+INFO: VIVADO_TOOL_VERSION is 2024.1 
+INFO: HDK shell is up-to-date
+WARNING: Don't forget to set the CL_DIR variable for the directory of your Custom Logic.
+INFO: AWS HDK setup PASSED.
+```
+
+5. Source the sdk setup script:
+> [!NOTE]
+> This step is required for all AMI types, since the SDK includes the [FPGA Management Tools](https://github.com/aws/aws-fpga/tree/f2/sdk/userspace/fpga_mgmt_tools)
+
+```bash
+source sdk_setup.sh
+```
+When prompted to restart services, tab to 'Ok' and hit Enter.
+
+Monitor for success messages. You should see the following:
+
+```bash
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+AWS FPGA: Copying Amazon FPGA Image (AFI) Management Tools to /usr/local/bin
+AWS FPGA: Installing shared library to /usr/local/lib
+	libfpga_mgmt.so.1 (libc6,x86-64) => /usr/local/lib/libfpga_mgmt.so.1
+AWS FPGA: Done with Amazon FPGA Image (AFI) Management Tools install.
+Done with SDK install.
+INFO: sdk_setup.sh PASSED
+```
+
+6. Install the packet generator application.
+
+```bash
+cd $SDK_DIR/apps/virtual-ethernet/scripts
+./virtual_ethernet_pktgen_install.py $INSTALL_DIR
+```
+
+Results should be similar to this:
+```bash
+_____________________________
+pktgen-dpdk installation and build complete!
+pktgen-dpdk may be setup via the following step:
+  sudo /home/ubuntu/aws-fpga/sdk/apps/virtual-ethernet/scripts/virtual_ethernet_pktgen_setup.py /home/ubuntu/installations --eni_dbdf <ENI_DBDF> --eni_ethdev <ENI_ETHDEV>
+_____________________________
+```
+
+7. Check interface bindings. Initially both network interfaces will be bound to the kernel driver.
+
+First, use ifconfig to verify that both interfaces are present and check to see how they are enumerated.
+```bash
+ifconfig
+```
+If prompted, follow the steps to install net-tools.
+
+```bash
+sudo apt install net-tools
+```
+Make note of interface numbers (i.e., ens5, ens6)
+
+Check the interface bindings.
+
+```bash
+python3 $INSTALL_DIR/dpdk/usertools/dpdk-devbind.py --status
+```
+Output should be similar to step 7 in the F2 instance configuration, but with different interface numbers (ens5, ens6).
+
+8. Configure the DPDK device binding for interface ens6.
+
+```bash
+sudo python3 $SDK_DIR/apps/virtual-ethernet/scripts/virtual_ethernet_pktgen_setup.py $INSTALL_DIR --eni_dbdf 0000:00:06.0 --eni_ethdev ens6
+```
+
