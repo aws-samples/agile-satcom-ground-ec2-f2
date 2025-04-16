@@ -205,10 +205,132 @@ Bye...
 
 1. Follow the Prerequisites and Placement Group guidance above.
 
-2. Build your Amazon EC2 F2 Virtual Ethernet Instance with two Elastic Network Adapters in two subnets in the same Availability Zone. If you build this instance from your own AMI or from an AMI that does not include gcc-12, install gcc-12 as outlined in the Background section above.
+2. Build your Amazon EC2 F2 Virtual Ethernet Instance with two Elastic Network Adapters in two subnets in the same Availability Zone. If you build this instance from your own Ubuntu LTS AMI that does not include gcc-12, install gcc-12 as outlined in the Background section above.
 
 3. Build your Packet Generator Instance with two Elastic Network Adapters in the same two subnets as the F2 instance uses. An m6i.8xlarge provides good performance for the Packet Generator Instance.
 
 4. Ensure that both instances are in the Cluster Placement Group that you created earlier. They will work if they are not in the Cluster Placement Group, but network performance will be suboptimal.
 
-5. 
+### F2 Virtual Ethernet Instance
+
+On your F2 instance (e.g. f2.6xlarge): -
+
+1. Set the AWS_FPGA_REPO_DIR:
+
+```bash
+AWS_FPGA_REPO_DIR=/home/ubuntu/aws-fpga
+```
+2. Set the INSTALL_DIR:
+
+```bash
+INSTALL_DIR=/home/ubuntu/installations
+```
+This is the location the DPDK will be installed into.
+
+3. Clone the repository:
+
+```bash
+git clone https://github.com/aws/aws-fpga.git $AWS_FPGA_REPO_DIR
+```
+
+4. Change to the $AWS_FPGA_REPO_DIR and, if using the AWS F2 Developer AMI, source the hdk setup script:
+> [!NOTE]
+> Skip this step if using your own Ubuntu LTS AMI.
+
+```bash
+cd $AWS_FPGA_REPO_DIR
+```
+
+```bash
+source hdk_setup.sh
+```
+
+Monitor for success messages. You should see the following:
+
+```bash
+INFO: Setting up environment variables
+INFO: Using vivado v2024.1 (64-bit)
+INFO: VIVADO_TOOL_VERSION is 2024.1 
+INFO: HDK shell is up-to-date
+WARNING: Don't forget to set the CL_DIR variable for the directory of your Custom Logic.
+INFO: AWS HDK setup PASSED.
+```
+
+5. Source the sdk setup script:
+> [!NOTE]
+> This step is required for all AMI types, since the SDK includes the [FPGA Management Tools](https://github.com/aws/aws-fpga/tree/f2/sdk/userspace/fpga_mgmt_tools)
+
+```bash
+source sdk_setup.sh
+```
+When prompted to restart services, tab to 'Ok' and hit Enter.
+
+Monitor for success messages. You should see the following:
+
+```bash
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+AWS FPGA: Copying Amazon FPGA Image (AFI) Management Tools to /usr/local/bin
+AWS FPGA: Installing shared library to /usr/local/lib
+	libfpga_mgmt.so.1 (libc6,x86-64) => /usr/local/lib/libfpga_mgmt.so.1
+AWS FPGA: Done with Amazon FPGA Image (AFI) Management Tools install.
+Done with SDK install.
+INFO: sdk_setup.sh PASSED
+```
+
+6. Next, load the CL_SDE AGFI. The AWS-provided AGFI ID for the CL_SDE application is located at the bottom of this page: [AWS F2 Github repository](https://github.com/aws/aws-fpga/blob/f2/hdk/cl/examples/cl_sde/README.md)
+
+```bash
+sudo fpga-load-local-image -S 0 -I <your-agfi-id>
+```
+View the FPGA slot status to see the local image loaded successfully:
+```bash
+sudo fpga-describe-local-image -S 0
+```
+The output should look like this:
+
+```bash
+AFI          0       your-agfi-id  loaded            0        ok               0       0x10212415
+AFIDEVICE    0       0x1d0f      0xf002      0000:34:00.0
+
+```
+
+7. Check interface binding. Initially both network interfaces will be bound to the kernel driver.
+
+```bash
+ifconfig
+
+python3 $INSTALL_DIR/dpdk/usertools/dpdk-devbind.py --status
+
+Output should look like this:
+Network devices using kernel driver
+===================================
+0000:27:00.0 'Elastic Network Adapter (ENA) ec20' if=ens5 drv=ena unused= *Active*
+0000:28:00.0 'Elastic Network Adapter (ENA) ec20' if=enp40s0 drv=ena unused= *Active*
+[rest omitted]
+```
+
+8. Bind the second interface to the DPDK driver.
+
+```bash
+sudo $SDK_DIR/apps/virtual-ethernet/scripts/virtual_ethernet_setup.py $INSTALL_DIR/dpdk 0 --eni_dbdf 0000:28:00.0 --eni_ethdev enp40s0
+```
+
+Check the new bindings.
+
+```bash
+python3 $INSTALL_DIR/dpdk/usertools/dpdk-devbind.py --status
+```
+
+The output should look like this:
+
+```bash
+Network devices using DPDK-compatible driver
+============================================
+0000:28:00.0 'Elastic Network Adapter (ENA) ec20' drv=igb_uio unused=ena
+0000:34:00.0 'Device f002' drv=igb_uio unused=
+
+Network devices using kernel driver
+===================================
+0000:27:00.0 'Elastic Network Adapter (ENA) ec20' if=ens5 drv=ena unused=igb_uio *Active*
+[rest omitted]
+```
