@@ -212,9 +212,9 @@ In practice, an FPGA instance would consume data produced elsewhere, whether tha
 
 2. Build your Amazon EC2 F2 Virtual Ethernet Instance with two Elastic Network Adapters in two subnets in the same Availability Zone. If you build this instance from your own Ubuntu LTS AMI that does not include gcc-12, install gcc-12 as outlined in the Background section above.
 
-3. Build your Packet Generator Instance with two Elastic Network Adapters in the same two subnets as the F2 instance uses. An m6i.8xlarge provides good performance for the Packet Generator Instance.
+3. Build your Packet Generator Instance with two Elastic Network Adapters in the same two subnets as the F2 instance uses. An m6i.8xlarge provides good performance for the Packet Generator Instance because this instance type offers 12.5 Gbps of network throughput.
 
-4. Ensure that both instances are in the Cluster Placement Group that you created earlier. They will work if they are not in the Cluster Placement Group, but network performance will be suboptimal.
+4. Ensure that both instances are in the Cluster Placement Group that you created earlier. They will work if they are not in the Cluster Placement Group, but network performance will be suboptimal. Testing with instances inside and then outside a Cluster Placement group will provide an indication of the potential performance difference you may see with sources of streaming data that cannot be placed inside a Cluster Placement Group, such as data sources that are not in an Amazon EC2 instance.
 
 ### F2 Virtual Ethernet Instance
 
@@ -327,7 +327,7 @@ Network devices using kernel driver
 [rest omitted]
 ```
 
-8. Bind the second interface to the DPDK driver.
+8. Bind the second interface to the IGB_UIO driver. This driver allows the FPGA to use DPDK networking and bypass kernel space.  
 
 ```bash
 sudo $SDK_DIR/apps/virtual-ethernet/scripts/virtual_ethernet_setup.py $INSTALL_DIR/dpdk 0 --eni_dbdf 0000:28:00.0 --eni_ethdev enp40s0
@@ -496,7 +496,7 @@ Network devices using kernel driver
 0000:00:05.0 'Elastic Network Adapter (ENA) ec20' if=ens5 drv=ena unused=igb_uio *Active*
 ```
 
-9. Edit the packet generator configuration file to match the source and destination IP addresses of the DPDK network adapters, and the destination MAC address of the DPDK adapter. Also set the protocol to TCP and the packet size to 9000 bytes.
+9. Edit the packet generator configuration file to match the source and destination IP addresses of the DPDK network adapters, and the destination MAC address of the DPDK adapter. Also set the protocol to TCP and the packet size to 9000 bytes for best performance. The larger the packet size, the higher the throughput. If your application will use UDP rather than TCP, change the protocol to UDP and compare results. You can also compare throughput results with other packet sizes to see the impact of smaller packet sizes. Change one variable at a time to make the most meaningful comparisons.
 
 ```bash
 more $SDK_DIR/apps/virtual-ethernet/scripts/pktgen-ena.pkt
@@ -521,4 +521,6 @@ set 0 size 512
 changes the packet size to 512 bytes
 
 ```bash
+
+The single- and two-instance configurations described here provide useful data on throughput capabilities of Amazon EC2 F2 FPGA instances for evaluating real-world workload capabilities. In the two-instance case, the packet generator running on an Amazon EC2 general-purpose compute instance can be used as a baseline for evaluating performance of an FPGA instance for digital satcom or other workloads where the streaming data source will be something other than an EC2 instance, which is useful for comparing and optimizing the performance of the production workload compared to that baseline.
 
