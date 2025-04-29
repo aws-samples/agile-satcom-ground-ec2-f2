@@ -2,6 +2,8 @@
 
 ### Overview
 
+Agile satcom imposes substantial networking requirements. Demodulating a satcom RF waveform and transforming it into digitized intermediate frequency (DigIF) streams produces approximately a 1:20 expansion in data rate. That is, 100 MHz of RF bandwidth equates to 2 Gbps of DigIF data, assuming an 8-bit sample rate. It is important to select a cloud compute instance type with sufficient network bandwidth. An Amazon EC2 F2.48xlarge instance with eight FPGAs and 100 Gbps of network throughput could accommodate approximately 4 GHz of RF spectrum, split across eight or more channels.
+
 In the [associated blog post](https://aws.amazon.com/blogs/publicsector/agile-satellite-communication-ground-systems-with-amazon-ec2-f2-fpga-solutions/), we use the Custom Logic Streaming Data Engine (CL_SDE) example to generate traffic. A [packet generator-responder topology](https://github.com/aws/aws-fpga/blob/f2/sdk/apps/virtual-ethernet/doc/Virtual_Ethernet_Application_Guide.md#packetgen-dual-instance-loopback) with two EC2 instances is also supported, which includes the Elastic Network Adapter (ENA) offload functionality to provide the full end-to-end functionality that [DPDK](https://www.dpdk.org/) offers. It, too, leverages CL_SDE, so this is a foundational step you'll need to take to work with DPDK on F2.
 
 
@@ -201,6 +203,8 @@ Bye...
 ```
 
 ## Two-Instance Test
+
+In practice, an FPGA instance would consume data produced elsewhere, whether that is a satcom digitizer or other data streaming producer, and process that data. So we provide in this example an environment that includes a data producer, which is a packet generator running on a general-purpose compute instance, and run the virtual ethernet application on the F2 instance to return that traffic to the packet generator to allow throughput measurement. The two-instance topology and metrics provided offer a useful amount of detail for determining real-world performance capability under a variety of operating conditions, such as packet size and protocol.
 
 ### Instance build overview
 
