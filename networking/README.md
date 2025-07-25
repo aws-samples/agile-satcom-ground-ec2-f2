@@ -521,15 +521,13 @@ set 0 size 512
 ```
 changes the packet size to 512 bytes
 
-```bash
-
 The single- and two-instance configurations described here provide useful data on throughput capabilities of Amazon EC2 F2 FPGA instances for evaluating real-world workload capabilities. In the two-instance case, the packet generator running on an Amazon EC2 general-purpose compute instance can be used as a baseline for evaluating performance of an FPGA instance for digital satcom or other workloads where the streaming data source will be something other than an EC2 instance, which is useful for comparing and optimizing the performance of the production workload compared to that baseline.
 
 #### Results
 
 Here's an example of Packet Generator performance with 64-byte packets.
 
-##### Packet Generator Instance
+##### Packet generator instance
 
 ```bash
 / Ports 0-0 of 1   <Main Page>  Copyright(c) <2010-2023>, Intel Corporation
