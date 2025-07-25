@@ -525,3 +525,164 @@ changes the packet size to 512 bytes
 
 The single- and two-instance configurations described here provide useful data on throughput capabilities of Amazon EC2 F2 FPGA instances for evaluating real-world workload capabilities. In the two-instance case, the packet generator running on an Amazon EC2 general-purpose compute instance can be used as a baseline for evaluating performance of an FPGA instance for digital satcom or other workloads where the streaming data source will be something other than an EC2 instance, which is useful for comparing and optimizing the performance of the production workload compared to that baseline.
 
+#### Results
+
+Here's an example of Packet Generator performance with 64-byte packets.
+
+##### Packet Generator Instance
+
+```bash
+/ Ports 0-0 of 1   <Main Page>  Copyright(c) <2010-2023>, Intel Corporation
+  Port:Flags        : 0:P------      Single
+Link State          :        <UP-100000-FD>     ---Total Rate---
+Pkts/s Rx           :                 93435                93435
+       Tx           :                473468               473468
+MBits/s Rx/Tx       :                59/303               59/303
+Pkts/s Rx Max       :                 95996                95996
+       Tx Max       :                495546               495546
+Broadcast           :                     0
+Multicast           :                   128
+Sizes 64            :             498314240
+      65-127        :                     0
+      128-255       :                     0
+      256-511       :                     0
+      512-1023      :                     0
+      1024-1518     :                     0
+Runts/Jumbos        :                 128/0
+ARP/ICMP Pkts       :                 128/0
+Errors Rx/Tx        :                   0/0
+Total Rx Pkts       :               7692946
+      Tx Pkts       :              39310729
+      Rx/Tx MBs     :            4923/25158
+TCP Flags           :                .A....
+TCP Seq/Ack         :           74616/74640
+Pattern Type        :               abcd...
+Tx Count/% Rate     :         Forever /100%
+Pkt Size/Rx:Tx Burst:           64 / 64: 64
+TTL/Port Src/Dest   :        64/54321/51234
+Pkt Type:VLAN ID    :       IPv4 / TCP:0001
+802.1p CoS/DSCP/IPP :             0/  0/  0
+VxLAN Flg/Grp/vid   :      0000/    0/    0
+IP  Destination     :         172.31.104.15
+    Source          :     172.31.105.187/20
+MAC Destination     :     12:a7:14:16:7c:b9
+    Source          :     12:1c:73:0d:1f:41
+NUMA/Vend:ID/PCI    :-1/1d0f:ec20/0000:00:06.0
+-- Pktgen 24.03.1 (DPDK 24.03.0)  Powered by DPDK  (pid:67801) ----------------
+
+Executing '/home/ubuntu/pktgen-ena.pkt'
+sset 0 dst mac 12:a7:14:16:7c:b9
+Pktgen:/> set 0 src ip 172.31.105.187/20
+Pktgen:/> set 0 dst ip 172.31.104.15
+Pktgen:/> set 0 sport 54321
+Pktgen:/> set 0 dport 51234
+Pktgen:/> set 0 type ipv4
+Pktgen:/> set 0 proto tcp
+Pktgen:/> set 0 size 64
+Pktgen:/> start 0
+Pktgen:/>
+** Version: DPDK 24.03.0, Command Line Interface
+Pktgen:/>
+```
+
+##### F2 Instance
+
+```bash
+Port statistics ====================================
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 5025535    RX-missed: 0          RX-bytes:  301532844
+  RX-errors: 0
+  RX-nombuf:  0
+  TX-packets: 5025566    TX-errors: 0          TX-bytes:  301537571
+
+  Throughput (since last show)
+  Rx-pps:        93434          Rx-bps:     44849736
+  Tx-pps:        93433          Tx-bps:     44848296
+  ############################################################################
+
+  ######################## NIC statistics for port 1  ########################
+  RX-packets: 5025548    RX-missed: 0          RX-bytes:  301532844
+  RX-errors: 0
+  RX-nombuf:  0
+  TX-packets: 5025548    TX-errors: 0          TX-bytes:  301532844
+
+  Throughput (since last show)
+  Rx-pps:        93436          Rx-bps:     44849320
+  Tx-pps:        93435          Tx-bps:     44849160
+  ############################################################################
+```
+
+### CPU Performance Impact of DPDK
+
+Running DPDK is effective at offloading network traffic processing from the CPU of an F2 instance. To demonstrate the effect, you can run a test with the packet generator topology described above. Start by running top with no applications running (before starting the pktgen application), and you should see performance similar to this: 
+
+```bash
+top - 20:24:34 up 3 min,  1 user,  load average: 0.37, 0.36, 0.17
+Tasks: 358 total,   1 running, 357 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.2 us,  0.0 sy,  0.0 ni, 95.8 id,  4.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem : 255704.3 total, 254276.3 free,    530.2 used,    897.8 buff/cache
+MiB Swap:  10240.0 total,  10240.0 free,      0.0 used. 253215.8 avail Mem
+```
+The %Cpu line shows 0.2% CPU load with no applications running:
+
+```bash
+%Cpu(s):  0.2 us,  0.0 sy,  0.0 ni, 95.8 id,  4.0 wa,  0.0 hi,  0.0 si,  0.0 st
+```
+
+Then, start the testpmd application on the F2 instance, but don't start the pktgen application on the packet generator instance yet. Output should be similar to this:
+
+```bash
+top - 21:00:42 up 39 min,  3 users,  load average: 0.22, 0.27, 0.66
+Tasks: 333 total,   1 running, 332 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  4.2 us,  0.0 sy,  0.0 ni, 95.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem : 255704.3 total, 218176.4 free,  33680.7 used,   3847.3 buff/cache
+MiB Swap:  10240.0 total,  10240.0 free,      0.0 used. 219980.5 avail Mem
+```
+In this case, CPU load increases to 4.2%:
+
+```bash
+%Cpu(s):  4.2 us,  0.0 sy,  0.0 ni, 95.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+```
+
+Finally, start the pktgen instance, sending 4000 byte packets in this example:
+
+```bash
+top - 21:02:23 up 41 min,  3 users,  load average: 0.86, 0.48, 0.70
+Tasks: 331 total,   1 running, 330 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  4.2 us,  0.0 sy,  0.0 ni, 95.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem : 255704.3 total, 218176.9 free,  33680.1 used,   3847.3 buff/cache
+MiB Swap:  10240.0 total,  10240.0 free,      0.0 used. 219981.0 avail Mem
+```
+
+In this case, there is no change in the CPU load with the test running and more than 93,000 packets per second being handled bidirectionally by DPDK networking. (See the port statistics below.)
+
+```bash
+%Cpu(s):  4.2 us,  0.0 sy,  0.0 ni, 95.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+```
+
+Finally, the associated port statistics on the F2 instance during this test:
+
+```bash
+Port statistics ====================================
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 5025535    RX-missed: 0          RX-bytes:  301532844
+  RX-errors: 0
+  RX-nombuf:  0
+  TX-packets: 5025566    TX-errors: 0          TX-bytes:  301537571
+
+  Throughput (since last show)
+  Rx-pps:        93434          Rx-bps:     44849736
+  Tx-pps:        93433          Tx-bps:     44848296
+  ############################################################################
+
+  ######################## NIC statistics for port 1  ########################
+  RX-packets: 5025548    RX-missed: 0          RX-bytes:  301532844
+  RX-errors: 0
+  RX-nombuf:  0
+  TX-packets: 5025548    TX-errors: 0          TX-bytes:  301532844
+
+  Throughput (since last show)
+  Rx-pps:        93436          Rx-bps:     44849320
+  Tx-pps:        93435          Tx-bps:     44849160
+  ############################################################################
+```
