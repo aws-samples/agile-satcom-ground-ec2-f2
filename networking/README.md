@@ -1,4 +1,4 @@
-## DPDK Networking with EC2 F2
+## DPDK Networking with Amazon EC2 F2 Instances
 
 ### Overview
 
