@@ -621,7 +621,7 @@ Tasks: 358 total,   1 running, 357 sleeping,   0 stopped,   0 zombie
 MiB Mem : 255704.3 total, 254276.3 free,    530.2 used,    897.8 buff/cache
 MiB Swap:  10240.0 total,  10240.0 free,      0.0 used. 253215.8 avail Mem
 ```
-The %Cpu line shows 0.2% CPU load with no applications running:
+The %Cpu line shows 0.2% user space (designated by 'us') CPU load with no applications running:
 
 ```bash
 %Cpu(s):  0.2 us,  0.0 sy,  0.0 ni, 95.8 id,  4.0 wa,  0.0 hi,  0.0 si,  0.0 st
@@ -636,7 +636,7 @@ Tasks: 333 total,   1 running, 332 sleeping,   0 stopped,   0 zombie
 MiB Mem : 255704.3 total, 218176.4 free,  33680.7 used,   3847.3 buff/cache
 MiB Swap:  10240.0 total,  10240.0 free,      0.0 used. 219980.5 avail Mem
 ```
-In this case, CPU load increases to 4.2%:
+In this case, user space CPU load increases to 4.2%:
 
 ```bash
 %Cpu(s):  4.2 us,  0.0 sy,  0.0 ni, 95.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
@@ -652,7 +652,7 @@ MiB Mem : 255704.3 total, 218176.9 free,  33680.1 used,   3847.3 buff/cache
 MiB Swap:  10240.0 total,  10240.0 free,      0.0 used. 219981.0 avail Mem
 ```
 
-In this case, there is no change in the CPU load with the test running and more than 93,000 packets per second being handled bidirectionally by DPDK networking. (See the port statistics below.)
+In this case, there is no change in the user space CPU load with the test running and more than 93,000 packets per second being handled bidirectionally by DPDK networking. (See the port statistics below.)
 
 ```bash
 %Cpu(s):  4.2 us,  0.0 sy,  0.0 ni, 95.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
