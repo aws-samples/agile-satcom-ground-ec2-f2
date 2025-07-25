@@ -684,3 +684,5 @@ Port statistics ====================================
   Tx-pps:        93435          Tx-bps:     44849160
   ############################################################################
 ```
+
+The results demonstrate that DPDK minimizes the CPU impact on the F2 instance.
